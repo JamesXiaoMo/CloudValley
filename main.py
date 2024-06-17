@@ -3,27 +3,30 @@ import os
 
 app = Flask(__name__)
 firmware_path = 'firmware'
-latest_version = "1.1.0"  # 最新固件版本
+latest_version = None
 
 
-class VersionControl:
+class VersionController:
     def __init__(self):
+        self.firmware_list = []
+        self.projects_dict = {}
         self.firmware_path = firmware_path
-        try:
-            self.firmware_list = os.listdir(self.firmware_path)
-            print('共找到{}个版本的固件'.format(str(len(self.firmware_list))))
-        except OSError as e:
-            print(e)
+        self.refresh_firmware_list()
 
     def show_firmware_list(self):
-        print('固件列表:\n')
+        print('固件列表:')
         for i in self.firmware_list:
             print(i)
 
     def refresh_firmware_list(self):
         try:
-            self.firmware_list = os.listdir(self.firmware_path)
-            print('刷新完成!共找到{}个版本的固件'.format(str(len(self.firmware_list))))
+            projects_list = os.listdir(self.firmware_path)
+            p_id = 0
+            for project in projects_list:
+                self.projects_dict[str(project)] = p_id
+                p_id += 1
+            print(self.projects_dict)
+            print('刷新完成!共{}个项目的{}个版本的固件'.format('6', str(len(self.firmware_list))))
         except OSError as e:
             print(e)
 
@@ -44,5 +47,4 @@ def post_firmware(version):
 
 if __name__ == '__main__':
     # app.run(host='0.0.0.0', port=5000)
-    a = VersionControl()
-    a.show_firmware_list()
+    a = VersionController()
