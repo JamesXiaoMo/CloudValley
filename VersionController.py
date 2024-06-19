@@ -34,4 +34,4 @@ class VersionController:
             for i in current_project_firmware_list:
                 if i > latest_firmware_version:
                     latest_firmware_version = i
-            return latest_firmware_version
+            return latest_firmware_version[:-4]

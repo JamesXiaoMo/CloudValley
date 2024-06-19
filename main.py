@@ -19,15 +19,17 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
 
-@app.route('/check_upgrade/<project>', methods=['POST'])
-def check_upgrade(project):
-    current_version = request.form.get('version')
+@app.route('/check_upgrade/<project>/<current_version>', methods=['GET'])
+def check_upgrade(project, current_version):
+    print('{}, {}'.format(project, current_version))
     latest_version = VC.upgrade_latest_firmware(project)
+    print(latest_version)
     if latest_version == 'Project Not Found':
         return 'Project_Not_Found'
     else:
         if current_version < latest_version:
-            return send_from_directory(path=app.config['UPLOAD_FOLDER'] + '/{}'.format(project), filename='{}.bin'.format(latest_version))
+            return send_from_directory(FIRMWARE_PATH + '/{}'.format(str(project)),
+                                       '{}.bin'.format(str(latest_version)))
         else:
             return "NO_UPDATE"
 
@@ -58,9 +60,9 @@ def upload_file(project):
     '''.format(str(project))
 
 
-@app.route('/install/<project>/<version>', methods=["POST"])
+@app.route('/install/<project>/<version>', methods=["GET"])
 def post_firmware(project, version):
-    return send_from_directory('firmware/{}'.format(str(project)), '{}.bin'.format(version))
+    return send_from_directory(FIRMWARE_PATH + '/{}'.format(str(project)), '{}.bin'.format(version))
 
 
 if __name__ == '__main__':
