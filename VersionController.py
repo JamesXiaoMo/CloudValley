@@ -20,8 +20,8 @@ class VersionController:
                 f_num += len(firmware_list)
                 self.firmware_list.append(firmware_list)
             print('刷新完成!共{}个项目的{}个版本的固件'.format(str(p_id), str(f_num)))
-        except OSError as e:
-            print(e)
+        except NotADirectoryError as e:
+            pass
 
     def upgrade_latest_firmware(self, project):
         if project not in self.projects_dict:

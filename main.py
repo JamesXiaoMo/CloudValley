@@ -42,7 +42,7 @@ def upload_file(project):
             return 'No selected file'
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            print(os.path.join(app.config['UPLOAD_FOLDER'] + '/' + str(project), filename))
+            print('Save as ' + os.path.join(app.config['UPLOAD_FOLDER'] + '/' + str(project), filename))
             file.save(os.path.join(app.config['UPLOAD_FOLDER'] + '/' + str(project), filename))
             return 'Upload success'
         else:
@@ -65,4 +65,4 @@ def post_firmware(version):
 
 if __name__ == '__main__':
     print('固件版本控制服务器启动！')
-    app.run(host='0.0.0.0', port=5550, debug=True)
+    app.run(host='0.0.0.0', port=5550)
