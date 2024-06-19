@@ -11,6 +11,8 @@ class VersionController:
     def refresh_firmware_list(self):
         try:
             projects_list = os.listdir(self.firmware_path)
+            if '.DS_Store' in projects_list:
+                projects_list.remove('.DS_Store')
             p_id = 0
             f_num = 0
             for project in projects_list:
@@ -21,7 +23,7 @@ class VersionController:
                 self.firmware_list.append(firmware_list)
             print('Refresh completed!Find {} projects and {} versions of firmware'.format(str(p_id), str(f_num)))
         except NotADirectoryError as e:
-            pass
+            print(e)
 
     def upgrade_latest_firmware(self, project):
         if project not in self.projects_dict:

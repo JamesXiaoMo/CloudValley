@@ -27,7 +27,7 @@ def check_upgrade(project):
         return 'Project_Not_Found'
     else:
         if current_version < latest_version:
-            return latest_version
+            return send_from_directory(path=app.config['UPLOAD_FOLDER'] + '/{}'.format(project), filename='{}.bin'.format(latest_version))
         else:
             return "NO_UPDATE"
 
@@ -50,7 +50,7 @@ def upload_file(project):
     return '''
     <!doctype html>
     <title>Upload new firmware</title>
-    <h1>Upload a new version of firmware for{}</h1>
+    <h1>Upload a new version of firmware for {}</h1>
     <form method=post enctype=multipart/form-data>
       <input type=file name=file>
       <input type=submit value=Upload>
@@ -58,9 +58,9 @@ def upload_file(project):
     '''.format(str(project))
 
 
-@app.route('/install/<project>/<version>', methods=["GET"])
+@app.route('/install/<project>/<version>', methods=["POST"])
 def post_firmware(project, version):
-    return send_from_directory('firmware/{}'.format(project), '{}.bin'.format(version))
+    return send_from_directory('firmware/{}'.format(str(project)), '{}.bin'.format(version))
 
 
 if __name__ == '__main__':
