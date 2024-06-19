@@ -42,7 +42,7 @@ def upload_file(project):
             return 'No selected file'
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            print('Save as ' + os.path.join(app.config['UPLOAD_FOLDER'] + '/' + str(project), filename))
+            print('Firmware saved as /' + os.path.join(app.config['UPLOAD_FOLDER'] + '/' + str(project), filename))
             file.save(os.path.join(app.config['UPLOAD_FOLDER'] + '/' + str(project), filename))
             return 'Upload success'
         else:
@@ -50,17 +50,17 @@ def upload_file(project):
     return '''
     <!doctype html>
     <title>上传新固件</title>
-    <h1>上传新固件</h1>
+    <h1>为{}项目上传新固件</h1>
     <form method=post enctype=multipart/form-data>
       <input type=file name=file>
       <input type=submit value=Upload>
     </form>
-    '''
+    '''.format(str(project))
 
 
 @app.route('/install/<project>/<version>', methods=["GET"])
-def post_firmware(version):
-    return send_from_directory('firmware', '{}.bin'.format(version))
+def post_firmware(project, version):
+    return send_from_directory('firmware/{}'.format(project), '{}.bin'.format(version))
 
 
 if __name__ == '__main__':
