@@ -49,8 +49,8 @@ def upload_file(project):
             return 'Please upload .bin file.'
     return '''
     <!doctype html>
-    <title>上传新固件</title>
-    <h1>为{}项目上传新固件</h1>
+    <title>Upload new firmware</title>
+    <h1>Upload a new version of firmware for{}</h1>
     <form method=post enctype=multipart/form-data>
       <input type=file name=file>
       <input type=submit value=Upload>
@@ -64,5 +64,5 @@ def post_firmware(project, version):
 
 
 if __name__ == '__main__':
-    print('固件版本控制服务器启动！')
+    print('Firmware version control server start！')
     app.run(host='0.0.0.0', port=5550)

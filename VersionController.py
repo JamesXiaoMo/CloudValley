@@ -19,7 +19,7 @@ class VersionController:
                 firmware_list = os.listdir(self.firmware_path + '/' + project)
                 f_num += len(firmware_list)
                 self.firmware_list.append(firmware_list)
-            print('刷新完成!共{}个项目的{}个版本的固件'.format(str(p_id), str(f_num)))
+            print('Refresh completed!Find {} projects and {} versions of firmware'.format(str(p_id), str(f_num)))
         except NotADirectoryError as e:
             pass
 
