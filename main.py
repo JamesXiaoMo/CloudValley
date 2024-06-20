@@ -31,7 +31,7 @@ def check_upgrade(project, current_version):
             return send_from_directory(FIRMWARE_PATH + '/{}'.format(str(project)),
                                        '{}.bin'.format(str(latest_version)))
         else:
-            return "NO_UPDATE"
+            return 'NO_UPDATE'
 
 
 @app.route('/upload_firmware/<project>', methods=['GET', 'POST'])
@@ -67,4 +67,4 @@ def post_firmware(project, version):
 
 if __name__ == '__main__':
     print('Firmware version control server start！')
-    app.run(host='0.0.0.0', port=5550)
+    app.run(host='0.0.0.0', port=5000)
