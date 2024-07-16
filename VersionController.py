@@ -10,6 +10,8 @@ class VersionController:
 
     def refresh_firmware_list(self):
         try:
+            del self.projects_dict
+            del self.firmware_list
             projects_list = os.listdir(self.firmware_path)
             if '.DS_Store' in projects_list:
                 projects_list.remove('.DS_Store')
@@ -29,9 +31,9 @@ class VersionController:
         if project not in self.projects_dict:
             return 'Project_Not_Found'
         else:
-            current_project_firmware_list = self.firmware_list[self.projects_dict[project]]
+            current_project_firmware_list = self.firmware_list[self.projects_dict[str(project)]]
             latest_firmware_version = current_project_firmware_list[0]
             for i in current_project_firmware_list:
                 if i > latest_firmware_version:
                     latest_firmware_version = i
-            return latest_firmware_version[:-4]
+            return str(latest_firmware_version[:-4])

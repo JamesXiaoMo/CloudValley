@@ -10,6 +10,7 @@ FIRMWARE_PATH = 'firmware'
 ALLOWED_EXTENSIONS = {'bin'}
 app.config['UPLOAD_FOLDER'] = FIRMWARE_PATH
 app.config['ALLOWED_EXTENSIONS'] = ALLOWED_EXTENSIONS
+latest_version = ''
 
 VC = VersionController(FIRMWARE_PATH)
 
@@ -22,8 +23,9 @@ def allowed_file(filename):
 @app.route('/check_upgrade/<project>/<current_version>', methods=['GET'])
 def check_upgrade(project, current_version):
     print('{}, {}'.format(project, current_version))
+    global latest_version
     latest_version = VC.upgrade_latest_firmware(project)
-    print(latest_version)
+    print('Latest version:' + latest_version)
     if latest_version == 'Project Not Found':
         return 'Project_Not_Found'
     else:
@@ -46,6 +48,10 @@ def upload_file(project):
             filename = secure_filename(file.filename)
             print('Firmware saved as /' + os.path.join(app.config['UPLOAD_FOLDER'] + '/' + str(project), filename))
             file.save(os.path.join(app.config['UPLOAD_FOLDER'] + '/' + str(project), filename))
+            VC.refresh_firmware_list()
+            global latest_version
+            latest_version = VC.upgrade_latest_firmware(project)
+            print('Latest version:' + latest_version)
             return 'Upload success'
         else:
             return 'Please upload .bin file.'
